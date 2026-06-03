@@ -1,5 +1,5 @@
 {
-  "game_name": "<FILL THIS>",
-  "description": "<FILL THIS>",
-  "player_mode": "two_player"
+  "game_name": "ZENSHIN 全進",
+  "description": "Un guerrero por cada sueño. Presentación interactiva del equipo.",
+  "player_mode": "single_player"
 }
