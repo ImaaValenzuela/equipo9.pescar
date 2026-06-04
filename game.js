@@ -1,6 +1,42 @@
 // Fundación Pescar — Buenos Aires Edition
 // ZENSHIN (全進) - Interactive team presentation arcade action game
 
+// Hide dev UI sidebar if running in the parent dashboard iframe
+try {
+  if (window.parent && window.parent !== window && window.parent.document) {
+    const hideSidebar = () => {
+      const sidebar = Array.from(window.parent.document.querySelectorAll('div')).find(el => 
+        el.classList.contains('w-[280px]') && el.classList.contains('shrink-0')
+      );
+      if (sidebar) {
+        sidebar.style.display = 'none';
+      }
+    };
+    hideSidebar();
+    setInterval(hideSidebar, 500);
+  }
+} catch (_) {}
+
+// Set favicon and title dynamically on both iframe and parent document
+try {
+  const updateTitleAndFavicon = (doc) => {
+    doc.title = "EQUIPO 9 - FUNDACION PESCAR";
+    let favicon = doc.querySelector("link[rel~='icon']");
+    if (!favicon) {
+      favicon = doc.createElement('link');
+      favicon.rel = 'icon';
+      doc.head.appendChild(favicon);
+    }
+    const protocol = 'http' + '://';
+    const svgNS = protocol + 'www.w3.org/2000/svg';
+    favicon.href = `data:image/svg+xml,<svg xmlns=%22${svgNS}%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🚀</text></svg>`;
+  };
+  updateTitleAndFavicon(document);
+  if (window.parent && window.parent.document) {
+    updateTitleAndFavicon(window.parent.document);
+  }
+} catch (_) {}
+
 const GAME_WIDTH = 800;
 const GAME_HEIGHT = 600;
 const STORAGE_KEY = 'pescar-arcade-zenshin-highscores';
@@ -48,65 +84,64 @@ const CHARACTERS = [
     color: '#ff6b35',
     colorHex: 0xff6b35,
     texture: 'valentina',
-    role: 'BECARIO 1',
-    desc: 'Lider creativa. Domina el arte del diseno con precision ninja.',
-    fullBio: 'Nuestra capitana de diseno. Combina arte y usabilidad con precision ninja para guiar a la tripulacion por el hiperespacio visual, creando interfaces inolvidables.'
+    role: 'LA NAVEGANTE DE LOS ENIGMAS',
+    desc: 'Combina pensamiento logico y creatividad pura para apuntar los canones.',
+    fullBio: 'Inicio su entrenamiento de vuelo en los simuladores clasicos de 32 bits, lo que encendio la chispa de su vocacion espacial. Hoy, es la encargada de apuntar los cañones de la nave combinando el rigor del pensamiento logico con rafagas de creatividad pura. Cuando no esta disparandole al Conformismo, escanea los rincones mas oscuros del mapa estelar y pinta las galaxias buscando respuestas a los grandes misterios del universo.'
   },
   {
     name: 'AZUCENA',
     color: '#4fc3f7',
     colorHex: 0x4fc3f7,
     texture: 'azucena',
-    role: 'BECARIO 2',
-    desc: 'Dev frontend. Convierte el caos en interfaces fluidas.',
-    fullBio: 'Domina la velocidad de la luz en CSS y Javascript. Transforma cualquier prototipo conceptual en portales interactivos fluidos y hermosos en tiempo record.'
+    role: 'LA CENTINELA DEL EQUILIBRIO',
+    desc: 'Guerrera tactica que mantiene el balance perfecto entre cuerpo, mente y codigo.',
+    fullBio: 'Una guerrera tactica que mantiene un balance perfecto entre el cuerpo, la mente y el codigo. Utiliza su aguda vision fotografica y artistica para encontrar los puntos debiles del enemigo en el campo de batalla, todo mientras mantiene una postura impecable.'
   },
   {
     name: 'LOURDES',
     color: '#e040fb',
     colorHex: 0xe040fb,
     texture: 'lourdes',
-    role: 'BECARIO 3',
-    desc: 'Especialista QA y UX. Encuentra errores con su mirada bionica.',
-    fullBio: 'Asegura la calidad orbital de la tripulacion. Su mirada bionica detecta fallos, anomalias y obstaculos de usabilidad a anos luz de distancia.'
+    role: 'LA ORACULO DE LAS CIENCIAS EXACTAS',
+    desc: 'Oficial de comunicaciones y principal ingeniera informatica de la nave.',
+    fullBio: 'La oficial de comunicaciones y principal ingeniera informatica de la nave. Mientras otros tripulantes se apoyan en la abstraccion del arte, ella prefiere la frialdad tactica de las matematicas y las ciencias exactas para calcular las trayectorias perfectas de los disparos. Fiel defensora de la fauna intergalactica y mantiene sus estadisticas altas a base de energia 100% plant-based.'
   },
   {
     name: 'MARCELO',
     color: '#4caf50',
     colorHex: 0x4caf50,
     texture: 'marcelo',
-    role: 'BECARIO 4',
-    desc: 'Arquitecto de sistemas. Disena bases de datos ultra robustas.',
-    fullBio: 'Arquitecto de almacenamiento masivo. Construye autopistas de informacion y bases de datos ultra-estables en el nucleo del servidor para resistir tormentas solares.'
+    role: 'EL INVOCADOR DE LAS NUBES',
+    desc: 'Estudiante de sistemas que esboza tacticas complejas de infraestructura.',
+    fullBio: 'Un estudiante de sistemas con la mirada puesta en la estratosfera. Armado con su lapiz y un profundo conocimiento de mundos de ciencia ficcion, esboza tacticas complejas de infraestructura antes de desplegarlas en la batalla.'
   },
   {
     name: 'DENISE',
     color: '#ffd54f',
     colorHex: 0xffd54f,
     texture: 'denise',
-    role: 'BECARIO 5',
-    desc: 'Product Manager. Mantiene la paz y coordinacion en el equipo.',
-    fullBio: 'Coordinadora de orbita temporal. Mantiene la paz y sincronia en las entregas del equipo, asegurando que los lanzamientos aterricen a tiempo y sin friccion.'
+    role: 'LA ILUSIONISTA DIGITAL',
+    desc: 'Fusiona la magia del diseno con la logica del codigo en pantalla.',
+    fullBio: 'Una maestra de las artes visuales que actualmente esta desbloqueando el arbol de habilidades de "Desarrolladora". Fusiona la magia del diseno con la logica del codigo para alterar la realidad en pantalla y crear interfaces letales.'
   },
   {
     name: 'IMANOL',
     color: '#ff5252',
     colorHex: 0xff5252,
     texture: 'imanol',
-    role: 'BECARIO 6',
-    desc: 'Backend de elite. Escribe algoritmos ultra-rapidos de servidor.',
-    fullBio: 'Ingeniero backend de elite. Escribe algoritmos ultra-rapidos de procesamiento y optimiza motores de bases de datos para un rendimiento estelar.'
+    role: 'EL TACTICO DE VANGUARDIA',
+    desc: 'Mente maestra detras del desarrollo del arsenal y las mejoras.',
+    fullBio: 'Desde que piso la cabina, su instinto ha sido desarmar y entender cada panel de control de la nave, persiguiendo respuestas hasta en los confines mas lejanos del espacio. Como especialista en Gestion de la Tecnologia, es la mente maestra detras del desarrollo del arsenal y las mejoras del escuadrón. Combina una disciplina de acero forjada en la sala de entrenamiento de gravedad cero con tacticas extraidas de sus extensas lecturas, llevando siempre los motores y al equipo mucho mas alla de sus limites tecnicos.'
   }
 ];
 
 const NEGATIVE_WORDS = [
-  'APATIA', 'ESTRES', 'CAOS', 'BUROCRACIA',
-  'DESORDEN', 'DUDAS', 'FRACASO', 'MIEDO',
-  'DEMORA', 'DISCORDIA', 'CONFUSION'
+  'CONFORMISMO', 'SEDENTARISMO', 'EXCUSAS',
+  'INDIVIDUALISMO', 'BUGS CRITICOS'
 ];
 
 const BOSS_WORDS = [
-  'BLOQUEO', 'CRISIS', 'PROCRACINACION', 'DESCOORDINACION'
+  'PROCRASTINACION', 'BLOQUEO CREATIVO', 'SINDROME DEL IMPOSTOR'
 ];
 
 const LETTER_GRID = [
@@ -530,24 +565,16 @@ class IntroScene extends Phaser.Scene {
     super('IntroScene');
     this.introScreens = [
       {
-        title: '¿Quiénes somos?',
-        content: 'Somos un equipo multidisciplinario y apasionado,\ncomprometidos con aprender, crear e innovar juntos.'
+        title: 'La Tripulación (¿Quiénes somos?)',
+        content: 'Una escuadra diversa de cadetes tech compartiendo los controles de la nave. Nos define la curiosidad por entender los sistemas de vuelo, el relajarnos compartiendo arte en las pantallas de la cabina durante los saltos hiperespaciales, y un escudo de apoyo inquebrantable: si las palabras nos acorralan, toda la tripulación concentra el fuego para defendernos.'
       },
       {
-        title: '¿De dónde venimos?',
-        content: 'Venimos de diversos trayectos y experiencias de\naprendizaje impulsados con orgullo por la Fundación Pescar.'
+        title: 'Coordenadas de Origen (¿De dónde venimos?)',
+        content: 'Nuestra nave fue ensamblada con puro esfuerzo obrero. Nos teletransportamos desde distintas bases del sector terrestre (Quilmes, Tortuguitas, Ezeiza, Tapiales y Flores). No empezamos la partida con naves de lujo ni rutas prearmadas; nuestro objetivo es trazar un camino estelar completamente nuevo y ser los primeros de nuestras familias en alcanzar el rango oficial de Profesionales.'
       },
       {
-        title: '¿A dónde vamos?',
-        content: 'Hacia el futuro de la tecnología, construyendo\nsoluciones de calidad y creciendo como profesionales.'
-      },
-      {
-        title: '¿Qué nos representa?',
-        content: 'Tecnología + Arte + Bienestar + Superación'
-      },
-      {
-        title: 'Nuestra misión hoy:',
-        content: 'Presentar a nuestro equipo y demostrar nuestra garra\na través de este juego arcade.'
+        title: 'Plan de Vuelo (¿A dónde vamos?)',
+        content: 'Directo al centro del enjambre de cosas negativas, bien lejos de la zona segura. Volamos con la misión de destruir cada obstáculo hasta graduarnos en tecnología. Para sobrevivir al caos de la pantalla, mantenemos el balance de la nave potenciando nuestros láseres creativos (arte) y manteniendo los reflejos de la tripulación al máximo nivel (fitness). ¡Nadie suelta el botón de disparo hasta ganar!'
       }
     ];
     this.screenIndex = 0;
@@ -568,23 +595,24 @@ class IntroScene extends Phaser.Scene {
     border.fillRect(48, 546, 6, 6);
     border.fillRect(746, 546, 6, 6);
 
-    this.titleText = this.add.text(400, 150, '', {
+    this.titleText = this.add.text(400, 115, '', {
       fontFamily: 'monospace',
-      fontSize: '36px',
+      fontSize: '28px',
       color: '#ff6b35',
       fontStyle: 'bold',
       align: 'center'
     }).setOrigin(0.5);
 
-    this.contentText = this.add.text(400, 280, '', {
+    this.contentText = this.add.text(400, 290, '', {
       fontFamily: 'monospace',
-      fontSize: '20px',
+      fontSize: '17px',
       color: '#ffffff',
       align: 'center',
-      lineSpacing: 10
+      lineSpacing: 8,
+      wordWrap: { width: 620 }
     }).setOrigin(0.5);
 
-    this.footerText = this.add.text(400, 480, 'PRESIONÁ START PARA CONTINUAR', {
+    this.footerText = this.add.text(400, 495, 'PRESIONÁ START PARA CONTINUAR', {
       fontFamily: 'monospace',
       fontSize: '14px',
       color: '#4fc3f7'
@@ -823,40 +851,62 @@ class CharacterDetailScene extends Phaser.Scene {
     border.lineStyle(2, this.charData.colorHex, 0.6);
     border.strokeRect(50, 50, 700, 500);
 
-    // Character Name Header
-    this.add.text(400, 100, this.charData.name, {
+    // Vertical Divider between columns
+    const divider = this.add.graphics();
+    divider.lineStyle(1.5, this.charData.colorHex, 0.4);
+    divider.lineBetween(300, 100, 300, 440);
+
+    // Left Column: Avatar Container
+    const avatarContainer = this.add.container(180, 270);
+    
+    // High-tech profile card background
+    const avatarBg = this.add.rectangle(0, 0, 180, 220, 0x1a1a2e, 0.85);
+    avatarBg.setStrokeStyle(3, this.charData.colorHex, 1);
+    avatarContainer.add(avatarBg);
+
+    // Large retro avatar sprite
+    const avatarSprite = this.add.sprite(0, -10, this.charData.texture);
+    avatarSprite.setScale(4.5);
+    avatarContainer.add(avatarSprite);
+
+    // Scanning laser effect
+    const scanLine = this.add.rectangle(0, -105, 174, 3, this.charData.colorHex, 0.6);
+    avatarContainer.add(scanLine);
+    this.tweens.add({
+      targets: scanLine,
+      y: 105,
+      duration: 2200,
+      yoyo: true,
+      repeat: -1,
+      ease: 'Sine.easeInOut'
+    });
+
+    // Right Column: Texts
+    // Character Name
+    this.add.text(330, 110, this.charData.name, {
       fontFamily: 'monospace',
-      fontSize: '44px',
+      fontSize: '38px',
       color: this.charData.color,
       fontStyle: 'bold'
-    }).setOrigin(0.5);
+    }).setOrigin(0, 0);
 
-    this.add.text(400, 150, this.charData.role, {
+    // Character Role
+    this.add.text(330, 160, this.charData.role, {
       fontFamily: 'monospace',
       fontSize: '18px',
       color: '#ffffff',
       fontStyle: 'bold'
-    }).setOrigin(0.5);
+    }).setOrigin(0, 0);
 
-    // Bio/Description text box
-    this.add.text(400, 255, this.charData.fullBio, {
+    // Bio/Description
+    this.add.text(330, 205, this.charData.fullBio, {
       fontFamily: 'monospace',
-      fontSize: '18px',
+      fontSize: '15px',
       color: '#e0e0e0',
-      align: 'center',
-      wordWrap: { width: 550 },
-      lineSpacing: 10
-    }).setOrigin(0.5);
-
-    // Large profile avatar box
-    const avatarContainer = this.add.container(400, 400);
-    const avatarBg = this.add.rectangle(0, 0, 100, 100, 0x1a1a2e);
-    avatarBg.setStrokeStyle(3, this.charData.colorHex, 1);
-    avatarContainer.add(avatarBg);
-
-    const avatarSprite = this.add.sprite(0, 0, this.charData.texture);
-    avatarSprite.setScale(2.5);
-    avatarContainer.add(avatarSprite);
+      align: 'left',
+      wordWrap: { width: 395 },
+      lineSpacing: 6
+    }).setOrigin(0, 0);
 
     // Bottom prompt
     const promptText = this.add.text(400, 520, 'PRESIONÁ ENTER o BOTÓN 1 PARA VOLVER', {
